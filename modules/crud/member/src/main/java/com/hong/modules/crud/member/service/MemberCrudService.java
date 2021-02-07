@@ -1,10 +1,14 @@
 package com.hong.modules.crud.member.service;
 
 import com.hong.commons.errors.exception.MemberAlreadyExistException;
+import com.hong.commons.errors.exception.MemberNotFoundException;
 import com.hong.modules.crud.member.dtos.MemberSaveDto;
+import com.hong.modules.crud.member.dtos.MemberUpdateDto;
 import com.hong.modules.crud.member.entitys.Member;
 import com.hong.modules.crud.member.repository.MemberCrudRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class MemberCrudService {
@@ -28,6 +32,35 @@ public class MemberCrudService {
                 .build();
 
         return memberCrudRepository.save(member);
+    }
 
+    public Member find(String id) {
+        return memberCrudRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    public List<Member> findAll() {
+        return memberCrudRepository.findAll();
+    }
+
+    public Member update(MemberUpdateDto dto) {
+        Member member = memberCrudRepository.findById(dto.getId())
+                .orElseThrow(MemberNotFoundException::new);
+
+        return memberCrudRepository.save(member.updateInfo(dto));
+    }
+
+    public Member updatePassword(String id, String password) {
+        Member member = memberCrudRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+
+        return memberCrudRepository.save(member.updatePassword(password));
+    }
+
+    public void delete(String id) {
+        Member member = memberCrudRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+
+        memberCrudRepository.delete(member);
     }
 }
