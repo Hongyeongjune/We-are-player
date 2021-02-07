@@ -3,6 +3,7 @@ package com.hong.modules.crud.member.entitys;
 import com.hong.commons.enums.DisclosureScopeState;
 import com.hong.commons.enums.MemberRole;
 import com.hong.commons.enums.PositionType;
+import com.hong.modules.crud.member.dtos.MemberUpdateDto;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -74,5 +75,22 @@ public class Member {
         this.likeCnt = 0;
         this.rudeCnt = 0;
         this.disclosureScopeState = DisclosureScopeState.PUBLIC;
+    }
+
+    public Member updateInfo(MemberUpdateDto dto) {
+        this.city = dto.getCity();
+        this.district = dto.getDistrict();
+        this.likeCnt = dto.getLikeCnt();
+        this.rudeCnt = dto.getRudeCnt();
+        this.pictureUri = dto.getPictureUri();
+        this.position = dto.getPosition();
+        this.disclosureScopeState = dto.getDisclosureScopeState();
+
+        return this;
+    }
+
+    public Member updatePassword(String password){
+        this.password = password;
+        return this;
     }
 }
